@@ -16,7 +16,8 @@ frames_to_skip = 400
 
 #loop through all .MP4 files in the Raw folder
 for mp4_file in glob.glob(os.path.join("Raw", '*.MP4')): 
-    video = os.path.basename(mp4_file)  # Extract the video name without the path
+    # extract the video name from path
+    video = os.path.basename(mp4_file)  
 
     # open video
     cap = cv2.VideoCapture(mp4_file)
