@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 
 import stereo_3D_box
 import stereo_3D_face
+import gaze_cone
 
 ######################### load and define calibration parameter ####################
 # camera naming convention still Left and Right
@@ -106,17 +107,11 @@ stereo_3D_box.plot_box(fig, x_3d,y_3d,z_3d)
 # for frame in range(len(right_camera_x_coordinate)):
 for frame in range(1): #for debugging
 
-    print(frame)
-
     face_left = np.array([left_camera_x_coordinate[frame].reshape(-1), left_camera_y_coordinate[frame].reshape(-1)])
     face_left = np.array(face_left, dtype=np.float32)
-
-    print(face_left)
         
     face_right = np.array([right_camera_x_coordinate[frame], right_camera_y_coordinate[frame]])
     face_right = np.array(face_right, dtype=np.float32)
-
-    print(face_right)
 
     facepoints_4D = cv2.triangulatePoints(P2,P1, face_left, face_right)
     facepoints_3D = facepoints_4D[:3] / facepoints_4D[3]
@@ -124,6 +119,8 @@ for frame in range(1): #for debugging
 
     facex_3d, facey_3d, facez_3d = facepoints_3D 
     stereo_3D_face.plot_face(fig,facex_3d, facey_3d, facez_3d)
+    gaze_cone.draw_gaze_cone(fig,facex_3d, facey_3d, facez_3d)
+
 
 
  # Update layout
