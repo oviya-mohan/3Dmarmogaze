@@ -5,8 +5,8 @@ Pipeline for 3D marmoset gaze tracking <br>
 2. Sync videos via flash frames and trim <br>
 	sync/ <br>
 	├── Raw/ <br>
-	│   └── video_1.mp4 <br>
-	       └── video_2.mp4 <br>
+	│   ├── video_1.mp4 <br>
+	│   └── video_2.mp4 <br>
 	├── Synced/ <br>
 	└── detect_flash.py - reads all .mp4 files in Raw and finds flash frames based on mean pixel values in the first xx frames and trims videos to begin yy frames from last flash frame and saves in Synced (xx - frames_to_check and yy  - frames_to_skip can be adjusted) <br>
 3. DLC <br>
