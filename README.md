@@ -1,4 +1,5 @@
 # 3Dmarmogaze
+
 ## Pipeline for 3D marmoset gaze tracking <br>
 
 1. Set-up + Camera Config <br>
@@ -12,23 +13,28 @@
 
 4. 3D Triangulation  <br>
 	a. pair wise stereo calibration : takes synced calibration videos as input and clacualtes stereo calibration parameters for a pair of cameras <br>
-	calibration_videos/  (two calibration videos - left and right - at a time for now, may add possibility to do all pairs at once in the future) <br>
-	calibration_frames/ <br>
-	stereo_calibration.py <br>
-	stereo_calibration_parameters.npz (output) 
+	- calibration_videos/  (two calibration videos - left and right - at a time for now, may add possibility to do all pairs at once in the future) <br>
+	- calibration_frames/ <br>
+	- [x] stereo_calibration.py <br>
+	- stereo_calibration_parameters.npz (output) 
+	
 	b. pair wise 3D triangulation of box and face points <br> 
-	left_labels.csv (labels for face points from left camera) <br> 
-	right_labels.csv (labels for face points from right camera) <br> 
-	stereo_calibration_parameters.npz (from 4a) <br>
-	stereo_3D_box.py - code to plot box <br>
-	stereo_3D_face.py - code to plot face points <br> 
-	gaze_cone .py - calculates normal vector from between the eyes and draws a 10 degree cones around that normal <br>
-	stereo_3D_plot.py - define box corner coordinates, read in face labels from csv, read in camera parameters, triangulate 3D coordinates for box corners and face points (using stereo_3D_box.py and stereo_3D_face.py) and plot everything together for each frame - currently only displays frame (plotly interactive frame) <br>
-	Saved frames stitched into video: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o) 
-	c. repeat for all pairs of cameras and average 3D triangulated points 
-	d. plot two boxes next to each other with 3D labels/ cones from both 
+	- left_labels.csv (labels for face points from left camera) <br> 
+	- right_labels.csv (labels for face points from right camera) <br> 
+	-  stereo_calibration_parameters.npz (from 4a) <br>
+	-  [x] stereo_3D_box.py - code to plot box <br>
+	-  [x] stereo_3D_face.py - code to plot face points <br> 
+	-  [x] gaze_cone .py - calculates normal vector from between the eyes and draws a 10 degree cones around that normal <br>
+	-  [x] stereo_3D_plot.py - define box corner coordinates, read in face labels from csv, read in camera parameters, triangulate 3D coordinates for box corners and face points (using stereo_3D_box.py and stereo_3D_face.py) and plot everything together for each frame - currently only displays plotly interactive plot <br>
+	-  [ ] stitch_frames.py - create output video based on plots generated for each frame, example: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o) 
+	
+	c. repeat for all pairs of cameras and average 3D triangulated points <br>
+	
+	d. plot two boxes next to each other with 3D labels/ cones from both <br>
+	
+5. Cone intersection 
 
-## File structure 	
+## Current file structure 	
 ```
 ├── README.md
 ├── sync
@@ -41,7 +47,6 @@
 │   ├── stereo_calibration.py
 │   └── stereo_calibration_parameters.npz
 └── stereo_3D
-       ├── __pycache__
        ├── gaze_cone.py
        ├── left_labels.csv
        ├── right_labels.csv
