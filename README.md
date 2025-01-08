@@ -27,25 +27,25 @@ Pipeline for 3D marmoset gaze tracking <br>
 	
 ```
 ├── README.md
-├── file_structure.txt
-├── stereo_3D
-│   ├── __pycache__
-│   ├── gaze_cone.py
-│   ├── left_labels.csv
-│   ├── right_labels.csv
-│   ├── stereo_3D_box.py
-│   ├── stereo_3D_face.py
-│   ├── stereo_3D_plot.py
-│   └── stereo_calibration_parameters.npz
-├── stereo_calib
+├── sync
+│ ├── Raw
+│ ├── Synced
+│ └── detect_flash.py
+├──  stereo_calib
 │   ├── calibration_frames
 │   ├── calibration_videos
 │   ├── stereo_calibration.py
 │   └── stereo_calibration_parameters.npz
-└── sync
-    ├── Raw
-    ├── Synced
-    └── detect_flash.py
+└── stereo_3D
+       ├── __pycache__
+       ├── gaze_cone.py
+       ├── left_labels.csv
+       ├── right_labels.csv
+       ├── stereo_3D_box.py
+       ├── stereo_3D_face.py
+       ├── stereo_3D_plot.py
+       └── stereo_calibration_parameters.npz
+
 ```
 
 	
