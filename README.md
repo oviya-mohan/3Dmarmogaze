@@ -25,6 +25,28 @@ Pipeline for 3D marmoset gaze tracking <br>
 	stereo_3D_plot.py - define box corner coordinates, read in face labels from csv, read in camera parameters, triangulate 3D coordinates for box corners and face points (using stereo_3D_box.py and stereo_3D_face.py) and plot everything together for each frame - currently only displays frame (plotly interactive frame) <br>
 	Saved frames stitched into video: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o)
 	
+	├── README.md
+├── sync
+    ├── Raw
+    ├── Synced
+    └── detect_flash.py
+├──  stereo_3D
+│   ├── __pycache__
+│   ├── gaze_cone.py
+│   ├── left_labels.csv
+│   ├── right_labels.csv
+│   ├── stereo_3D_box.py
+│   ├── stereo_3D_face.py
+│   ├── stereo_3D_plot.py
+│   └── stereo_calibration_parameters.npz
+└── stereo_calib
+       ├── calibration_frames
+       ├── calibration_videos
+       ├── stereo_calibration.py
+       └── stereo_calibration_parameters.npz
+
+    
+	
 
 	
 
