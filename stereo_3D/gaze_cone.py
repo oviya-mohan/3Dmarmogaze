@@ -32,47 +32,49 @@ def calc_normal(A, B, C, P1, P2):
     
     return normal
 
-def calc_cone(start_point, end_point, angle):
-    # Convert the angle to radians
-    angle_rad = np.radians(angle)
-    
-    # Get the direction vector from start to end point
-    direction = np.array(end_point) - np.array(start_point)
-    
-    # Normalize the direction vector to get the cone's axis
+def calc_cone(start, direction, angle, height, resolution=100):
+    # Normalize direction vector
     direction = direction / np.linalg.norm(direction)
     
-    # Calculate the distance between start and end points (length of the cone)
-    length = np.linalg.norm(np.array(end_point) - np.array(start_point))
+    # Calculate radius of the cone base
+    radius = height * np.tan(np.radians(angle))
     
-    # Calculate the radius of the cone's base (using tan(angle) * distance)
-    radius = np.tan(angle_rad) * length
+    # Generate circular base points in 3D
+    theta = np.linspace(0, 2 * np.pi, resolution)
+    x_base = radius * np.cos(theta)
+    y_base = radius * np.sin(theta)
+    z_base = np.zeros_like(theta)
     
-    # Create a circle (base of the cone) perpendicular to the direction vector
-    num_points = 100  # Number of points on the circle
-    theta = np.linspace(0, 2 * np.pi, num_points)
+    # Rotate base to align with direction vector
+    # Reference axis is Z
+    ref = np.array([0, 0, 1])
+    rot_axis = np.cross(ref, direction)
+    rot_angle = np.arccos(np.dot(ref, direction))
     
-    # Perpendicular vector to the direction vector
-    # Use the cross product to find a vector perpendicular to direction
-    up = np.array([0, 0, 1])  # Default up vector
-    if np.abs(direction[2]) > 0.9:  # Special case for vertical direction vector
-        up = np.array([1, 0, 0])
+    if np.linalg.norm(rot_axis) > 0:  # Avoid division by zero
+        rot_axis = rot_axis / np.linalg.norm(rot_axis)
+        K = np.array([
+            [0, -rot_axis[2], rot_axis[1]],
+            [rot_axis[2], 0, -rot_axis[0]],
+            [-rot_axis[1], rot_axis[0], 0]
+        ])
+        R = np.eye(3) + np.sin(rot_angle) * K + (1 - np.cos(rot_angle)) * (K @ K)
+        base_points = np.vstack((x_base, y_base, z_base))
+        rotated_base = R @ base_points
+        x_base, y_base, z_base = rotated_base
     
-    perpendicular_vector = np.cross(direction, up)
-    perpendicular_vector = perpendicular_vector / np.linalg.norm(perpendicular_vector)
+    # Translate base to the tip of the cone
+    x_base += start[0] + direction[0] * height
+    y_base += start[1] + direction[1] * height
+    z_base += start[2] + direction[2] * height
     
-    # Points on the circle in the plane perpendicular to the direction vector
-    circle_x = radius * np.cos(theta) * perpendicular_vector[0]
-    circle_y = radius * np.cos(theta) * perpendicular_vector[1]
-    circle_z = radius * np.cos(theta) * perpendicular_vector[2]
+    # Add the tip of the cone
+    x_cone = np.concatenate([[start[0]], x_base])
+    y_cone = np.concatenate([[start[1]], y_base])
+    z_cone = np.concatenate([[start[2]], z_base])
     
-    # Now calculate the cone's surface points by scaling the circle points
-    # from start point along the direction vector
-    cone_x = start_point[0] + direction[0] * length + circle_x
-    cone_y = start_point[1] + direction[1] * length + circle_y
-    cone_z = start_point[2] + direction[2] * length + circle_z
+    return x_cone, y_cone, z_cone
 
-    return cone_x, cone_y, cone_z
     
 
 def draw_gaze_cone(fig, facex_3d, facey_3d, facez_3d):
@@ -91,28 +93,45 @@ def draw_gaze_cone(fig, facex_3d, facey_3d, facez_3d):
 
         normal_vector = calc_normal(left_eye, right_eye, forehead, left_tuft, right_tuft) 
 
-        # scale size of normal vector for visibility
-        normal_length = 2
-        normal_vector = normal_vector / np.linalg.norm(normal_vector) * normal_length
+        # factor to scale size of normal vector for visibility
+        normal_length = 1 # 1 for unit normal vector
 
         # calculate the starting point of the normal vector on the plane midway between the eyes
         start_point = (left_eye + right_eye) / 2
-
-        # define the end point of the normal vector
-        end_point = start_point + normal_vector 
-
+        
+        # define angle for cone (10 visual degrees) and caluclate cone parameters 
         angle = 10
-        cone_x, cone_y, cone_z = calc_cone(start_point, end_point, angle)
+        x_cone, y_cone, z_cone = calc_cone(start_point, normal_vector, angle, normal_length)
 
-    # draw normal vector on plot 
-    fig.add_trace(go.Scatter3d(x=[start_point[0], end_point[0]], y=[start_point[1], end_point[1]],
-                                z=[start_point[2], end_point[2]], mode='lines',
-                                line=dict(color='black', width=5),
-                                marker=dict(size=5, color='green'),
-                                name='Normal Vector'))
-    
-    # draw the cone mesh
-    fig = go.Figure(data=[go.Surface(
-        x=cone_x, y=cone_y, z=cone_z, colorscale='Viridis', opacity=0.6)
-    ])
+        # scale normal vector
+        normal_vector = normal_vector / np.linalg.norm(normal_vector) * normal_length
+
+        # define end point
+        end_point = start_point + normal_vector
+
+        # add normal vector on plot 
+        fig.add_trace(go.Scatter3d(x=[start_point[0], end_point[0]], y=[start_point[1], end_point[1]],
+                                    z=[start_point[2], end_point[2]], mode='lines',
+                                    line=dict(color='black', width=5),
+                                    marker=dict(size=5, color='green'),
+                                    name='Normal Vector'))
+
+        # triangulate the cone surface
+        simplices = []
+        for i in range(1, len(x_cone) - 1):
+            simplices.append([0, i, i + 1])
+        simplices.append([0, len(x_cone) - 1, 1])  # Close the base
+
+        # create the 3D mesh for the cone and add to plot
+        fig.add_trace(go.Mesh3d(
+            x=x_cone,
+            y=y_cone,
+            z=z_cone,
+            i=[s[0] for s in simplices],
+            j=[s[1] for s in simplices],
+            k=[s[2] for s in simplices],
+            color='cyan',
+            opacity=0.6
+        ))
+        
 

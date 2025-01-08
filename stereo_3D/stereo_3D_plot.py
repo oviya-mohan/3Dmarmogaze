@@ -105,7 +105,7 @@ fig = go.Figure()
 stereo_3D_box.plot_box(fig, x_3d,y_3d,z_3d)
 
 # for frame in range(len(right_camera_x_coordinate)):
-for frame in range(1): #for debugging
+for frame in range(5): #for debugging
 
     face_left = np.array([left_camera_x_coordinate[frame].reshape(-1), left_camera_y_coordinate[frame].reshape(-1)])
     face_left = np.array(face_left, dtype=np.float32)
