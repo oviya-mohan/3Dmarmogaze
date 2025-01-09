@@ -8,19 +8,22 @@ import cv2
  
  # calculate mean pixel value for the first 1000 frames 
  # (the flash should be within this range, for 60fps video 1000 frames is ~15 seconds)
-frames_to_check = 1000
+frames_to_check = 500
 
 # number of frames after flash frame to begin trimmed video from 
 # (for 60 fps video, 400 frames is ~7 seconds)
 frames_to_skip = 400
 
+videos = [file for file in os.listdir("Raw") if (file.endswith(".mp4") or file.endswith(".MP4")) ]
+print(videos)
+
 #loop through all .MP4 files in the Raw folder
-for mp4_file in glob.glob(os.path.join("Raw", '*.MP4')): 
+for video in videos: 
     # extract the video name from path
-    video = os.path.basename(mp4_file)  
+    print("Syncing " + str(video))
 
     # open video
-    cap = cv2.VideoCapture(mp4_file)
+    cap = cv2.VideoCapture("Raw/" + str(video))
     frame_count = 0
     
     # intialize empty list to add mean pixel values of each frame 
@@ -39,7 +42,7 @@ for mp4_file in glob.glob(os.path.join("Raw", '*.MP4')):
     # of the mean pixel value of the frames in the video 
     overall_mean = np.mean(mean_pixel_values)
     overall_sd = np.std(mean_pixel_values)
-    print(len(mean_pixel_values), overall_mean, overall_sd)
+    # print(len(mean_pixel_values), overall_mean, overall_sd)
 
     # loop through the frames again and find the frames 
     # whose mean pixel values are more than 2.5SD away 
@@ -51,7 +54,7 @@ for mp4_file in glob.glob(os.path.join("Raw", '*.MP4')):
         if mean_pixel_values[i] > overall_mean + 1.5*overall_sd:
             flash_frame = i 
 
-    print(flash_frame)
+    print("Flash frame : " , flash_frame)
 
 
     # get video properties to write output video
@@ -67,14 +70,22 @@ for mp4_file in glob.glob(os.path.join("Raw", '*.MP4')):
     # Set the starting frame position to fixed number of frames frames from the last flash frame
     cap.set(cv2.CAP_PROP_POS_FRAMES, flash_frame + frames_to_skip)
 
+    # count number of frames written out in synced video 
+    output_frames = 0 
+
     # Loop through frames from the starting frame
     while cap.isOpened():
         ret, frame = cap.read()
+        # print(ret, frame)
         if not ret:
             break
 
         # Write the frame to the output video
         out.write(frame)
+        output_frames = output_frames + 1 
+
+    print("Synced " + str(video))
+    print("Total frames written : " + str(output_frames))
 
     # Release video objects
     cap.release()
