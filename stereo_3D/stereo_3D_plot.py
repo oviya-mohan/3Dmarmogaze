@@ -43,19 +43,17 @@ P2 = np.dot(K2,RT)
 
 ######################### define and triangulate box coordinates ####################
 
-# define coordinates for box from both left and right cameras  (can be obtained via napari) 
-#corners_left = np.array([[], []]) 
-# example
-corners_left = np.array([[1055.489428	,	978.7120111	,	172.5491323	,	14.47797956	,	689.6676175	,	682.8931396	,	262.8755052	,	206.4215221]	,[610.6143649	,	1414.519084	,	1547.750484	,	633.1959581,639.9704361,	1066.762548	,	1111.925735	,	649.0030734]])
+# define coordinates for box from both left and right cameras (can be ontained via get_box_coords)
 
+# examples
+# 102324
+corners_left = np.array([[172, 13, 1060, 970, 272, 208, 687], [1554, 637, 609, 1409, 1115, 666, 641]]) 
+corners_right = np.array([[170, 7, 985, 926, 476, 416, 911, 886], [1329, 576, 466, 1431, 1024, 547, 489, 1034]])
+# 101024
+# corners_left = np.array([[1055.489428	,	978.7120111	,	172.5491323	,	14.47797956	,	689.6676175	,	682.8931396	,	262.8755052	,	206.4215221]	,[610.6143649	,	1414.519084	,	1547.750484	,	633.1959581,639.9704361,	1066.762548	,	1111.925735	,	649.0030734]])
+# corners_right = np.array([[983.2283297	,	913.2253907	,	170.2909729	,	5.445342265	,	908.709072	,	883.8693194	,	468.3680038	,	420.9466579]	,[	472.8666461	,	1432.584359	,	1321.934552	,	569.967497	,	549.6440631	,	1014.824884	,	1010.308565	,	585.7746123]])
 
 # corners_left_undistort = cv2.undistortImagePoints(corners_left, K2, D2)
-
-#corners_right = np.array([[], []])
-# example
-corners_right = np.array([[983.2283297	,	913.2253907	,	170.2909729	,	5.445342265	,	908.709072	,	883.8693194	,	468.3680038	,	420.9466579]	,[	472.8666461	,	1432.584359	,	1321.934552	,	569.967497	,	549.6440631	,	1014.824884	,	1010.308565	,	585.7746123]])
-
-
 # corners_right_undistort = cv2.undistortImagePoints(corners_right, K1, D1)
 
 # 3D triangulate points for box and plot 
