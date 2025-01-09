@@ -9,13 +9,15 @@ square_size = 1.0  # Square size in your defined unit (e.g., meters or millimete
 
 
 # extract frames from calibration video for stereo calibration for both cameras
-frame_interval = 30  # Process every 30th frame (adjust as needed)
+frame_interval = 20  # Process every xth frame (adjust as needed)
 
-# track output folder names
+calib_videos = [file for file in os.listdir("calibration_videos") if (file.endswith(".mp4") or file.endswith(".MP4")) ]
+print(calib_videos)
+
+# create and track output folders containing extracted frames
 output_folders = []
 
-for mp4_file in glob.glob(os.path.join("calibration_videos", '*.MP4')): 
-    video = os.path.basename(mp4_file)
+for video in calib_videos:
     output_folder = "calibration_frames/" + str(video)
     output_folders.append(output_folder)
 
@@ -24,7 +26,7 @@ for mp4_file in glob.glob(os.path.join("calibration_videos", '*.MP4')):
         os.makedirs(output_folder)
 
     # Open the video file
-    video_path = mp4_file
+    video_path = "calibration_videos/" + str(video)
     cap = cv2.VideoCapture(video_path)
 
     frame_count = 0
@@ -49,7 +51,7 @@ for mp4_file in glob.glob(os.path.join("calibration_videos", '*.MP4')):
     cap.release()
     cv2.destroyAllWindows()
 
-    print(f"Saved {saved_frame_count} frames containing the checkerboard pattern.")
+    print(f"Saved {saved_frame_count} frames containing the checkerboard pattern for " + str(video))
 
 
 
@@ -69,8 +71,6 @@ imgpoints_right = []
 # Read image pairs
 images_right = glob.glob(output_folders[0] + str("/*.png"))
 images_left = glob.glob(output_folders[1] + str("/*.png"))
-
-print(len(images_right), len(images_left))
 
 
 for img_left, img_right in zip(images_left, images_right):

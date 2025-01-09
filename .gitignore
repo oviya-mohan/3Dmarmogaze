@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .mp4
 .MP4
+.jpg
+.jpeg
+.png

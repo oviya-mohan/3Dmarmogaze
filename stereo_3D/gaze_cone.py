@@ -27,7 +27,8 @@ def calc_normal(A, B, C, P1, P2):
     
     # both dot products being negative indicate the normal is in the right direction
     # if not, direction of normal needs to be reversed  
-    if not (dot_P1 < 0 and dot_P2 < 0):
+    # if not (dot_P1 < 0 and dot_P2 < 0):
+    if (dot_P1 < 0 and dot_P2 < 0):
         normal = -normal  
     
     return normal
@@ -94,7 +95,7 @@ def draw_gaze_cone(fig, facex_3d, facey_3d, facez_3d):
         normal_vector = calc_normal(left_eye, right_eye, forehead, left_tuft, right_tuft) 
 
         # factor to scale size of normal vector for visibility
-        normal_length = 1 # 1 for unit normal vector
+        normal_length = 3 # 1 for unit normal vector
 
         # calculate the starting point of the normal vector on the plane midway between the eyes
         start_point = (left_eye + right_eye) / 2

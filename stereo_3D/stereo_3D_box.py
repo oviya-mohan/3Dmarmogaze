@@ -54,5 +54,13 @@ def plot_box(fig, x_3d,y_3d,z_3d):
                 line=dict(color='black', width=2)
                 ))
 
+        #fill back side of the box
+        fig.add_scatter3d(x=[x_3d[4], x_3d[5], x_3d[6], x_3d[7]],  
+                        y=[y_3d[4], y_3d[5], y_3d[6], y_3d[7]],  
+                        z=[z_3d[4], z_3d[5], z_3d[6], z_3d[7]], 
+                                surfaceaxis=2, surfacecolor='purple',
+                                mode='lines', opacity = 0.5,
+                line=dict(color='purple', width=2),
+                name='Back of the box')
 
 

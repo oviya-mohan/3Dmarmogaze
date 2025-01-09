@@ -26,7 +26,9 @@
 	-  [x] stereo_3D_face.py - code to plot face points <br> 
 	-  [x] gaze_cone .py - calculates normal vector from between the eyes and draws a 10 degree cones around that normal <br>
 	-  [x] stereo_3D_plot.py - define box corner coordinates, read in face labels from csv, read in camera parameters, triangulate 3D coordinates for box corners and face points (using stereo_3D_box.py and stereo_3D_face.py) and plot everything together for each frame - currently only displays plotly interactive plot <br>
-	-  [ ] stitch_frames.py - create output video based on plots generated for each frame, example: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o) 
+	-  visualization 
+		- [x] combine_images.py <br> 
+		- [x] stitch_frames.py - create output video based on plots generated for each frame, example: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o) 
 	
 	c. repeat for all pairs of cameras and average 3D triangulated points <br>
 	

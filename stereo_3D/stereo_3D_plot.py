@@ -101,11 +101,9 @@ for point in right_points:
 
 ######################### loop through frames and plot 3D ####################
 
-fig = go.Figure()
-stereo_3D_box.plot_box(fig, x_3d,y_3d,z_3d)
 
-# for frame in range(len(right_camera_x_coordinate)):
-for frame in range(5): #for debugging
+for frame in range(len(right_camera_x_coordinate)):
+# for frame in range(10): #for debugging
 
     face_left = np.array([left_camera_x_coordinate[frame].reshape(-1), left_camera_y_coordinate[frame].reshape(-1)])
     face_left = np.array(face_left, dtype=np.float32)
@@ -118,32 +116,37 @@ for frame in range(5): #for debugging
     facepoints_3D = np.dot(R_wc, facepoints_3D) + t_wc
 
     facex_3d, facey_3d, facez_3d = facepoints_3D 
+
+    fig = go.Figure()
+    
+    stereo_3D_box.plot_box(fig, x_3d,y_3d,z_3d) # put this outside the loop to see movement through time
     stereo_3D_face.plot_face(fig,facex_3d, facey_3d, facez_3d)
     gaze_cone.draw_gaze_cone(fig,facex_3d, facey_3d, facez_3d)
 
 
 
  # Update layout
-fig.update_layout(
-        scene=dict(
-                xaxis_title='X axis',
-                yaxis_title='Y axis',
-                zaxis_title='Z axis'
-        ),
-        title='Interactive 3D Plot'
-        )
+# fig.update_layout(
+#         scene=dict(
+#                 xaxis_title='X axis',
+#                 yaxis_title='Y axis',
+#                 zaxis_title='Z axis'
+#         ),
+#         title='Interactive 3D Plot'
+#         )
         # change visual orientation
-fig.update_layout(
-        scene=dict(
-        camera=dict(
-        #     eye=dict(x=0.5, y=0.35, z=-1.5),
-            eye=dict(x=0.5, y=0.35, z=-1.75),
-            up=dict(x=0, y=-1, z=0)  # This sets the up direction
-        )))
+    fig.update_layout(
+            scene=dict(
+            camera=dict(
+            #     eye=dict(x=0.5, y=0.35, z=-1.5),
+                eye=dict(x=0.5, y=0.35, z=-1.75),
+                up=dict(x=0, y=-1, z=0)  # This sets the up direction
+            )))
 
-fig.update_layout(showlegend=False)
+    fig.update_layout(showlegend=False)
 
-# Show the plot
-fig.show()
+    # Show the plot
+    # fig.show()
+    fig.write_image('visualization/3D_plots/frame_' + str(frame) + '.png', format='png')
 
 
