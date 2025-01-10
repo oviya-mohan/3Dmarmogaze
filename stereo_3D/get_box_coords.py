@@ -10,7 +10,7 @@ def click_event(event, x, y, flags, params):
     global click_count  # Use the global click_count variable
     
     if event == cv2.EVENT_LBUTTONDOWN:
-        if click_count < max_clicks-1:
+        if click_count < max_clicks:
             click_count += 1
             x_coords.append(x)
             y_coords.append(y)
@@ -47,23 +47,23 @@ def read_first_frame(video_path):
         return None
 
 
-parser = argparse.ArgumentParser(description="Get box coordinates for a video")
+# parser = argparse.ArgumentParser(description="Get box coordinates for a video")
     
-# Add argument for file name
-parser.add_argument("filename", type=str, help="name of the video file in .mp4")
+# # Add argument for file name
+# parser.add_argument("filename", type=str, help="name of the video file in .mp4")
     
-# Parse the arguments
-args = parser.parse_args()
+# # Parse the arguments
+# args = parser.parse_args()
     
-# Get the file name from the command line argument
-video = args.filename
-image = read_first_frame("marmo_videos/" + str(video))
+# # Get the file name from the command line argument
+# video = args.filename
+# image = read_first_frame("marmo_videos/" + str(video))
 
-# image = cv2.imread("visualization/left_frames/img000.jpg")
+image = cv2.imread("visualization/right_frames/img000.jpg")
 x_coords, y_coords = [], []
 
 # Display image and set up mouse callback
-print("Get box coordinates for " + str(video))
+# print("Get box coordinates for " + str(video))
 
 click_count = 0
 max_clicks = 8

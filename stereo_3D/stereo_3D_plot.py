@@ -9,7 +9,7 @@ import stereo_3D_box
 import stereo_3D_face
 import gaze_cone
 
-######################### load and define calibration parameter ####################
+######################### load and define calibration parameters ####################
 # camera naming convention still Left and Right
 
 # Load stereo calibration parameters (example)
@@ -46,9 +46,13 @@ P2 = np.dot(K2,RT)
 # define coordinates for box from both left and right cameras (can be ontained via get_box_coords)
 
 # examples
-# 102324
-corners_left = np.array([[172, 13, 1060, 970, 272, 208, 687], [1554, 637, 609, 1409, 1115, 666, 641]]) 
-corners_right = np.array([[170, 7, 985, 926, 476, 416, 911, 886], [1329, 576, 466, 1431, 1024, 547, 489, 1034]])
+# 102324 - Right
+corners_right = np.array([[997, 845, 106, 3, 906, 844, 409, 422], [432, 1411, 1254, 459, 544, 1032, 991, 542]])
+corners_left = np.array([[1067, 969, 172, 32, 694, 683, 257, 215], [602, 1402, 1532, 601, 631, 1063, 1106, 640]])
+# 102324 - Left
+# corners_left = np.array([[186, 8, 1072, 966, 254, 167, 683, 677], [1384, 442, 368, 1240, 985, 492, 472, 930]]) 
+# corners_right = np.array([[159, 8, 1017, 883, 420, 381, 859, 812], [1248, 471, 411, 1334, 961, 545, 527, 981]])
+
 # 101024
 # corners_left = np.array([[1055.489428	,	978.7120111	,	172.5491323	,	14.47797956	,	689.6676175	,	682.8931396	,	262.8755052	,	206.4215221]	,[610.6143649	,	1414.519084	,	1547.750484	,	633.1959581,639.9704361,	1066.762548	,	1111.925735	,	649.0030734]])
 # corners_right = np.array([[983.2283297	,	913.2253907	,	170.2909729	,	5.445342265	,	908.709072	,	883.8693194	,	468.3680038	,	420.9466579]	,[	472.8666461	,	1432.584359	,	1321.934552	,	569.967497	,	549.6440631	,	1014.824884	,	1010.308565	,	585.7746123]])
@@ -100,8 +104,8 @@ for point in right_points:
 ######################### loop through frames and plot 3D ####################
 
 
-for frame in range(len(right_camera_x_coordinate)):
-# for frame in range(10): #for debugging
+# for frame in range(len(right_camera_x_coordinate)):
+for frame in range(1): #for debugging
 
     face_left = np.array([left_camera_x_coordinate[frame].reshape(-1), left_camera_y_coordinate[frame].reshape(-1)])
     face_left = np.array(face_left, dtype=np.float32)
@@ -144,7 +148,7 @@ for frame in range(len(right_camera_x_coordinate)):
     fig.update_layout(showlegend=False)
 
     # Show the plot
-    # fig.show()
-    fig.write_image('visualization/3D_plots/frame_' + str(frame) + '.png', format='png')
+    fig.show()
+    # fig.write_image('visualization/3D_plots/frame_' + str(frame) + '.png', format='png')
 
 

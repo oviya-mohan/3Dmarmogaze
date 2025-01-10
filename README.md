@@ -27,7 +27,7 @@
 	-  [x] gaze_cone .py - calculates normal vector from between the eyes and draws a 10 degree cones around that normal <br>
 	-  [x] stereo_3D_plot.py - define box corner coordinates, read in face labels from csv, read in camera parameters, triangulate 3D coordinates for box corners and face points (using stereo_3D_box.py and stereo_3D_face.py) and plot everything together for each frame - currently only displays plotly interactive plot <br>
 	-  visualization 
-		- [x] combine_images.py <br> 
+		- [x] combine_images.py - combine 3D plot with labeled 2D image from one of the cameras <br> 
 		- [x] stitch_frames.py - create output video based on plots generated for each frame, example: ![current example](https://drive.google.com/uc?export=view&id=1OCP2ramtKjVqt7a1vF60PJgLwIiJY74o) 
 	
 	c. repeat for all pairs of cameras and average 3D triangulated points <br>
@@ -38,24 +38,37 @@
 
 ## Current file structure 	
 ```
-├── README.md
-├── sync
-│ ├── Raw
-│ ├── Synced
-│ └── detect_flash.py
-├──  stereo_calib
+├── stereo_3D
+│   ├── __pycache__
+│   │   ├── gaze_cone.cpython-39.pyc
+│   │   ├── stereo_3D_box.cpython-39.pyc
+│   │   ├── stereo_3D_face.cpython-39.pyc
+│   │   └── stereo_3D_plot.cpython-39.pyc
+│   ├── gaze_cone.py
+│   ├── get_box_coords.py
+│   ├── left_labels.csv
+│   ├── marmo_videos
+│   ├── right_labels.csv
+│   ├── stereo_3D_box.py
+│   ├── stereo_3D_face.py
+│   ├── stereo_3D_plot.py
+│   ├── stereo_calibration_parameters.npz
+│   └── visualization
+│       ├── 3D_plots
+│       ├── combine_images.py
+│       ├── combined_images
+│       ├── left_frames
+│       ├── right_frames
+│       └── stitch_frames.py
+├── stereo_calib
 │   ├── calibration_frames
 │   ├── calibration_videos
 │   ├── stereo_calibration.py
 │   └── stereo_calibration_parameters.npz
-└── stereo_3D
-       ├── gaze_cone.py
-       ├── left_labels.csv
-       ├── right_labels.csv
-       ├── stereo_3D_box.py
-       ├── stereo_3D_face.py
-       ├── stereo_3D_plot.py
-       └── stereo_calibration_parameters.npz
+└── sync
+    ├── Raw
+    ├── Synced
+    └── detect_flash.py
 
 ```
 
