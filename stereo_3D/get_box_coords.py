@@ -12,8 +12,8 @@ def click_event(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN:
         if click_count < max_clicks:
             click_count += 1
-            x_coords.append(x)
-            y_coords.append(y)
+            x_coords.append(float(x))
+            y_coords.append(float(y))
             
             cv2.circle(image, (x, y), 3, (0, 255, 0), -1)  # Optional: Visualize click
             cv2.imshow("Image", image)
@@ -59,7 +59,7 @@ def read_first_frame(video_path):
 # video = args.filename
 # image = read_first_frame("marmo_videos/" + str(video))
 
-image = cv2.imread("visualization/right_frames/img000.jpg")
+image = cv2.imread("box/right_102324.jpg")
 x_coords, y_coords = [], []
 
 # Display image and set up mouse callback
