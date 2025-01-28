@@ -59,7 +59,7 @@ def read_first_frame(video_path):
 # video = args.filename
 # image = read_first_frame("marmo_videos/" + str(video))
 
-image = cv2.imread("box/right_102324.jpg")
+image = cv2.imread("23102024/right_box/right.jpg")
 x_coords, y_coords = [], []
 
 # Display image and set up mouse callback

@@ -62,5 +62,16 @@ def plot_box(fig, x_3d,y_3d,z_3d):
                                 mode='lines', opacity = 0.5,
                 line=dict(color='purple', width=2),
                 name='Back of the box')
+        
+        fig.add_scatter3d(
+            x=[x_3d[0]],  # X-coordinate
+            y=[y_3d[0]],  # Y-coordinate
+            z=[z_3d[0]],  # Z-coordinate
+            mode='markers',  # Markers only
+            marker=dict(
+                size=8,  # Size of the point
+                color='red'  # Color of the point
+            )
+        )
 
 

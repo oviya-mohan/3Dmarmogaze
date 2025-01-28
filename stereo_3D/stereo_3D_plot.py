@@ -9,11 +9,13 @@ import stereo_3D_box
 import stereo_3D_face
 import gaze_cone
 
+# folder to use 
+folder = "23102024/right_box/"
 ######################### load and define calibration parameters ####################
 # camera naming convention still Left and Right
 
 # Load stereo calibration parameters (example)
-calibration_data = np.load('stereo_calibration_012324.npz')
+calibration_data = np.load( str(folder) + 'stereo_calibration_parameters.npz')
 K1 = calibration_data['mtxL']
 D1 = calibration_data['distL']
 K2 = calibration_data['mtxR']
@@ -47,10 +49,12 @@ P2 = np.dot(K2,RT)
 # define coordinates for box from both left and right cameras (can be ontained via get_box_coords)
 
 # examples
-# 102324 - Right
-# corners_right = np.array([[997, 845, 106, 3, 906, 844, 409, 422], [432, 1411, 1254, 459, 544, 1032, 991, 542]])
-# corners_left = np.array([[1067, 969, 172, 32, 694, 683, 257, 215], [602, 1402, 1532, 601, 631, 1063, 1106, 640]])
-# 102324 - Left
+# # 102324 - Right
+corners_right = np.array([[994.0, 847.0, 100.0, 9.0, 911.0, 843.0, 426.0, 420.0], 
+                          [437.0, 1410.0, 1252.0, 458.0, 541.0, 1026.0, 983.0, 540.0]])
+corners_left = np.array([[1070.0, 971.0, 179.0, 38.0, 705.0, 684.0, 273.0, 217.0], 
+                         [598.0, 1401.0, 1530.0, 608.0, 636.0, 1063.0, 1109.0, 641.0]])
+# # 102324 - Left
 # corners_right = np.array([[1067.0, 970.0, 184.0, 9.0, 681.0, 681.0, 253.0, 171.0], 
 #                          [374.0, 1236.0, 1382.0, 388.0, 472.0, 925.0, 985.0, 488.0]]) 
 # corners_left = np.array([[1016.0, 886.0, 160.0, 9.0, 857.0, 814.0, 425.0, 392.0], 
@@ -64,10 +68,10 @@ P2 = np.dot(K2,RT)
 # corners_right = np.array([[983.0	,	913.0	,	170.0	,	5.0	,	908.0	,	883.0	,	468.0	,	420.0]	,[	472.0	,	1432.0	,	1321.0	,	569.0	,	549.0	,	1014.0,	1010.0	,	585.0]])
 
 # #012325
-corners_left = np.array([[1006.0, 821.0, 151.0, 65.0, 651.0, 600.0, 208.0, 167.0],
-                         [451.0, 1151.0, 1215.0, 315.0, 471.0, 888.0, 888.0, 401.0] ])
-corners_right = np.array([[954.0, 847.0, 92.0, 99.0, 867.0, 822.0, 430.0, 435.0],
-                          [306.0, 1265.0, 1141.0, 368.0, 611.0, 1049.0, 1007.0, 606.0] ])
+# corners_left = np.array([[1006.0, 821.0, 151.0, 65.0, 651.0, 600.0, 208.0, 167.0],
+#                          [451.0, 1151.0, 1215.0, 315.0, 471.0, 888.0, 888.0, 401.0] ])
+# corners_right = np.array([[954.0, 847.0, 92.0, 99.0, 867.0, 822.0, 430.0, 435.0],
+#                           [306.0, 1265.0, 1141.0, 368.0, 611.0, 1049.0, 1007.0, 606.0] ])
 
 # corners_left_undistort = cv2.undistortImagePoints(corners_left, K2, D2)
 # corners_right_undistort = cv2.undistortImagePoints(corners_right, K1, D1)
@@ -86,7 +90,7 @@ x_3d,y_3d,z_3d = points_3D
 
 # read labels from two csv files, left and right camera
 
-df_right = pd.read_csv('right_labels.csv')
+df_right = pd.read_csv( str(folder) +'left_labels.csv')
 right_points = [[]]
 for index, row in df_right.iterrows():
     right_points.append(row[3:].to_numpy())  # Convert each row to an array
@@ -99,7 +103,7 @@ for point in right_points:
     right_camera_x_coordinate.append(point[::2])
     right_camera_y_coordinate.append(point[1::2])
 
-df_left = pd.read_csv('left_labels.csv')
+df_left = pd.read_csv(str(folder) +'right_labels.csv')
 left_points = []
 for index, row in df_left.iterrows():
     left_points.append(row[3:].to_numpy())  # Convert each row to an array
@@ -117,8 +121,8 @@ for point in right_points:
 ######################### loop through frames and plot 3D ####################
 
 
-# for frame in range(len(right_camera_x_coordinate)):
-for frame in range(1): #for debugging
+for frame in range(len(right_camera_x_coordinate)):
+# for frame in range(1): #for debugging
 
     face_left = np.array([left_camera_x_coordinate[frame].reshape(-1), left_camera_y_coordinate[frame].reshape(-1)])
     face_left = np.array(face_left, dtype=np.float32)
@@ -153,15 +157,15 @@ for frame in range(1): #for debugging
     fig.update_layout(
             scene=dict(
             camera=dict(
-            #     eye=dict(x=0.5, y=0.35, z=-1.5),
-                eye=dict(x=0.5, y=0.35, z=-1.75),
+                eye=dict(x=0.5, y=0.35, z=-1.5),
+                # eye=dict(x=-0.25, y=0.25, z=-1.75),
                 up=dict(x=0, y=-1, z=0)  # This sets the up direction
             )))
 
     fig.update_layout(showlegend=False)
 
     # Show the plot
-    fig.show()
-    # fig.write_image('visualization/3D_plots/frame_' + str(frame) + '.png', format='png')
+    # fig.show()
+    fig.write_image(str(folder) + '3D_plots/frame_' + str(frame) + '.png', format='png')
 
 
