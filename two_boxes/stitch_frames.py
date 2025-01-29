@@ -4,7 +4,7 @@ import re
 
 def stitch_images_to_video(folder_path, output_path, fps=1):
     # Get a list of all .png files in the folder
-    image_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+    image_files = [f for f in os.listdir(folder_path) if f.endswith('.jpg')]
     
     # Sort files based on the frame number in the filename
     def extract_frame_number(file_name):
@@ -32,4 +32,4 @@ def stitch_images_to_video(folder_path, output_path, fps=1):
     print(f"Video saved to {output_path}")
 
 # Example usage
-stitch_images_to_video(folder_path="23102024/left_box/combined_images", output_path="23102024/left_box/3D_video.mp4", fps=60)
+stitch_images_to_video(folder_path="combined_images", output_path="3D_video.mp4", fps=60)

@@ -1,0 +1,1 @@
+ffmpeg -i left_video.mp4 -vsync 0 left_frames/img%04d.jpg
